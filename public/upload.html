@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Équipe - Upload</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Équipe</h1>
+<h2>Upload</h2>
+
+<form enctype="multipart/form-data">
+    <input name="file" type="file"/>
+</form>
+
+<p id="status"></p>
+
+<script>
+    $(document).ready(function () {
+        $(':file').on('change', function (event) {
+            console.log('Upload: ' + event.target.value);
+
+            var form = $('form')[0];
+            $.ajax({
+                url: '/api/upload',
+                type: 'POST',
+                data: new FormData(form),
+                beforeSend: function () {
+                    $('#status').html('Uploading...');
+                },
+                success: function () {
+                    $('#status').html('Finished!');
+                },
+                error: function (error) {
+                    console.error(error);
+                    $('#status').html('Error : ' + error.responseText);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
