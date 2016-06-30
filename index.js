@@ -1,5 +1,6 @@
 var express = require('express');
 var busboy = require('connect-busboy');
+var xlsx = require('xlsx');
 
 var app = express();
 
@@ -14,19 +15,33 @@ app.get('/', function (request, response) {
 });
 
 app.post('/api/upload', function (request, response) {
-
+    console.log("Upload: start.");
+    
     try {
         request.pipe(request.busboy);
         request.busboy.on('file', function (fieldname, file, filename) {
-            console.log("Uploaded: " + filename);
+            console.log("Upload: event FILE. filename=%s", filename);
 
             var chunks = [];
             file.on('data', function (chunk) {
+                console.log("Upload: data DATA. length=%s", chunk.length);
                 chunks.push(chunk);
             });
             file.on('end', function () {
-                var body = Buffer.concat(chunks);
-                console.log("Data: " + body.length);
+                console.log("Upload: event END.");
+
+                var buffer = Buffer.concat(chunks);
+
+                try {
+                    var object = xlsx.read(buffer);
+                    object.SheetNames.forEach(function (name) {
+                        var sheet = object.Sheets[name];
+                        console.log("Upload : Sheet = %s, Cell value = %j", name, sheet.A2);
+                    });
+                } catch (error) {
+                    console.error("Error on upload...");
+                    console.error(error);
+                }
             });
 
         });

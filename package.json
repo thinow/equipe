@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "express": "4.13.3",
-    "connect-busboy": "0.0.2"
+    "connect-busboy": "0.0.2",
+    "xlsx": "^0.8.0"
   },
   "license": "MIT"
 }
