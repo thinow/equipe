@@ -1,5 +1,6 @@
 var express = require('express');
 var busboy = require('connect-busboy');
+var upload = require('./lib/upload');
 var xlsx = require('xlsx');
 
 var app = express();
@@ -15,43 +16,30 @@ app.get('/', function (request, response) {
 });
 
 app.post('/api/upload', function (request, response, next) {
-    console.log("Upload: start.");
+    console.log("API: upload");
 
-    request.pipe(request.busboy);
-    request.busboy.on('file', function (fieldname, file, filename) {
-        console.log("Upload: event FILE. filename=%s", filename);
-
-        var chunks = [];
-        file.on('data', function (chunk) {
-            console.log("Upload: data DATA. length=%s", chunk.length);
-            chunks.push(chunk);
-        });
-        file.on('end', function () {
-            console.log("Upload: event END.");
-
-            try {
-                var buffer = Buffer.concat(chunks);
-
-                var object = xlsx.read(buffer);
-                object.SheetNames.forEach(function (name) {
-                    var sheet = object.Sheets[name];
-                    var cell = sheet.A2;
-                    console.log("Upload : Sheet = %s, Cell value = %j", name, cell);
-                    response.send(cell.v);
-                });
-            } catch (cause) {
-                next(cause);
-            }
-        });
-
-    });
+    upload(request)
+        .on('uploaded', function (data) {
+            var parsed = xlsx.read(data);
+            parsed.SheetNames.forEach(function (name) {
+                var sheet = parsed.Sheets[name];
+                var cell = sheet.A2;
+                console.log("Upload : Sheet = %s, Cell value = %j", name, cell);
+                response.send(cell.v);
+            });
+        })
+        .on('error', function (error) {
+            next(error);
+        })
+        .start();
 });
 
 // Handle errors
 app.use(function (error, request, response, next) {
     if (error) {
+        console.log("API: upload");
         console.error(error);
-        response.status(500).send("Internal server error");
+        response.status(500).send(error.message);
     }
 });
 
