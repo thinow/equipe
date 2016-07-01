@@ -7,11 +7,11 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 app.use(busboy());
-
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (request, response) {
-    response.send('Hello!');
+    response.writeHead(302, {'Location': 'upload.html'});
+    response.end();
 });
 
 app.post('/api/upload', function (request, response, next) {
