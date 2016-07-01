@@ -31,8 +31,8 @@
                 beforeSend: function () {
                     $('#status').html('Uploading...');
                 },
-                success: function () {
-                    $('#status').html('Finished!');
+                success: function (response) {
+                    $('#status').html('Finished! Cell value = ' + response);
                 },
                 error: function (error) {
                     console.error(error);

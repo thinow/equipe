@@ -14,41 +14,44 @@ app.get('/', function (request, response) {
     response.send('Hello!');
 });
 
-app.post('/api/upload', function (request, response) {
+app.post('/api/upload', function (request, response, next) {
     console.log("Upload: start.");
-    
-    try {
-        request.pipe(request.busboy);
-        request.busboy.on('file', function (fieldname, file, filename) {
-            console.log("Upload: event FILE. filename=%s", filename);
 
-            var chunks = [];
-            file.on('data', function (chunk) {
-                console.log("Upload: data DATA. length=%s", chunk.length);
-                chunks.push(chunk);
-            });
-            file.on('end', function () {
-                console.log("Upload: event END.");
+    request.pipe(request.busboy);
+    request.busboy.on('file', function (fieldname, file, filename) {
+        console.log("Upload: event FILE. filename=%s", filename);
 
+        var chunks = [];
+        file.on('data', function (chunk) {
+            console.log("Upload: data DATA. length=%s", chunk.length);
+            chunks.push(chunk);
+        });
+        file.on('end', function () {
+            console.log("Upload: event END.");
+
+            try {
                 var buffer = Buffer.concat(chunks);
 
-                try {
-                    var object = xlsx.read(buffer);
-                    object.SheetNames.forEach(function (name) {
-                        var sheet = object.Sheets[name];
-                        console.log("Upload : Sheet = %s, Cell value = %j", name, sheet.A2);
-                    });
-
-                    response.sendStatus(200);
-                } catch (error) {
-                    console.error("Error on upload...");
-                    console.error(error);
-                }
-            });
-
+                var object = xlsx.read(buffer);
+                object.SheetNames.forEach(function (name) {
+                    var sheet = object.Sheets[name];
+                    var cell = sheet.A2;
+                    console.log("Upload : Sheet = %s, Cell value = %j", name, cell);
+                    response.send(cell.v);
+                });
+            } catch (cause) {
+                next(cause);
+            }
         });
-    } catch (cause) {
-        console.error('Error on upload', cause);
+
+    });
+});
+
+// Handle errors
+app.use(function (error, request, response, next) {
+    if (error) {
+        console.error(error);
+        response.status(500).send("Internal server error");
     }
 });
 
