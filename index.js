@@ -38,6 +38,8 @@ app.post('/api/upload', function (request, response) {
                         var sheet = object.Sheets[name];
                         console.log("Upload : Sheet = %s, Cell value = %j", name, sheet.A2);
                     });
+
+                    response.sendStatus(200);
                 } catch (error) {
                     console.error("Error on upload...");
                     console.error(error);
@@ -45,8 +47,6 @@ app.post('/api/upload', function (request, response) {
             });
 
         });
-
-        response.sendStatus(200);
     } catch (cause) {
         console.error('Error on upload', cause);
     }
