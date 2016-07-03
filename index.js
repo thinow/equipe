@@ -10,26 +10,32 @@ app.set('port', (process.env.PORT || 5000));
 app.use(busboy());
 app.use(express.static(__dirname + '/public'));
 
-var onError = function (error) {
-    console.log("API: error");
-    console.error(error);
-    response.status(500).send(error.message);
-}
-
 app.get('/', function (request, response) {
     response.writeHead(302, {'Location': 'upload.html'});
     response.end();
 });
 
-app.post('/api/upload', function (request, response, next) {
+app.post('/api/upload', function (request, response) {
     console.log("API: upload");
 
-    upload(request, onError, function (data) {
+    var handleError = function (error) {
+        console.log("API: error during upload");
+        console.error(error);
+        response.status(500).send(error.message);
+    };
 
-        var result = parser.parse(data, onError);
-        console.log("API: successfully parsed. Result = %j", result);
+    upload(request, {
+        onSuccess: function (data) {
+            try {
+                var result = parser.parse(data);
+                console.log("API: successfully parsed. Result = %j", result);
 
-        response.end();
+                response.end();
+            } catch (cause) {
+                handleError(cause);
+            }
+        },
+        onError: handleError
     });
 });
 
