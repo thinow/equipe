@@ -2,8 +2,16 @@ var expect = require("chai").expect;
 var parser = require("../lib/parser");
 
 describe("Excel files parser", function () {
-    it("result is an array", function () {
-        var data = undefined;
-        expect(parser.parse(data)).to.be.a('array');
+
+    it("Cannot parse undefined", function () {
+        expect(function () {
+            parser.parse(undefined)
+        }).to.throw(ReferenceError);
+    });
+
+    it("Can parse data", function () {
+        expect(function () {
+            parser.parse('blabla');
+        }).to.not.throw(Error);
     });
 });
