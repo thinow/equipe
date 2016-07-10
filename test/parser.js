@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var parser = require("../lib/parser");
 var fs = require('fs');
 
-describe("Excel files parser", function () {
+describe("Excel files take", function () {
 
     function readTestFile() {
         return fs.readFileSync(__dirname + '/resources/test-file.xlsx');
@@ -27,8 +27,8 @@ describe("Excel files parser", function () {
 
         it("Cannot parse undefined", function () {
             expect(function () {
-                parser.parse(undefined)
-            }).to.throw(ReferenceError);
+                parser.parse(undefined);
+            }).to.throw(Error);
         });
 
         it("Read as an Excel file", function () {
