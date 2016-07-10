@@ -2,23 +2,23 @@ var expect = require("chai").expect;
 var parser = require("../lib/parser");
 var fs = require('fs');
 
-describe("Excel files take", function () {
+describe("Excel files parser", function () {
 
     function readTestFile() {
         return fs.readFileSync(__dirname + '/resources/test-file.xlsx');
     }
 
-    describe("Integration tests", function () {
+    describe.skip("Integration tests", function () {
 
         it("Can parse test file", function () {
             // when
-            var result = parser.parse(readTestFile());
+            var result = parser.parse(readTestFile(), {anchor: /must/i});
 
             // then
             expect(result).to.exist;
             expect(result)
                 .to.have.property('dates')
-                .that.include.members(['2016-06-13', '2016-06-17', '2016-06-22', '2016-06-23'])
+                .that.include.members([new Date('2016-06-13'), new Date('2016-06-17'), new Date('2016-06-22'), new Date('2016-06-23')])
                 .that.have.lengthOf(7);
         });
     });
