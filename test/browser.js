@@ -23,7 +23,21 @@ describe("Browse cells references", function () {
     });
 
     it("Left neighbor", function () {
-        expect(browse({from: 'B2', to: ['left']})).to.equal('B1');
+        expect(browse({from: 'B2', to: ['left']})).to.equal('A2');
+    });
+
+    it("Bottom neighbor", function () {
+        expect(browse({from: 'B2', to: ['down']})).to.equal('B3');
+    });
+
+    it("Combination: left down", function () {
+        expect(browse({from: 'B2', to: ['left', 'down']})).to.equal('A3');
+    });
+
+    it("Reach left limit", function () {
+        expect(function () {
+            browse({from: 'A1', to: ['left']});
+        }).to.throw(Error);
     });
 
     it("Unknown FORMAT", function () {
