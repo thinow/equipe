@@ -27,7 +27,7 @@ app.post('/api/upload', function (request, response) {
     upload(request, {
         onSuccess: function (data) {
             try {
-                var result = parser.parse(data);
+                var result = parser.parse(data, {anchor: /soll/i});
                 console.log("API: successfully parsed. Result = %j", result);
 
                 response.end();
