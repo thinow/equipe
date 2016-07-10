@@ -44,7 +44,7 @@ describe("Excel files parser", function () {
             var xlsx = parser.readAsXlsx(readTestFile());
 
             // when
-            var anchors = parser.findAnchors({xlsx: xlsx, sheet: 'Sheet1', anchor: 'Must'});
+            var anchors = parser.findAnchors({xlsx: xlsx, sheet: 'Sheet1', regexp: /must/i});
 
             // then
             expect(anchors).to.have.members(['B3', 'B7', 'B11', 'B15', 'B19', 'B25', 'B29']);
