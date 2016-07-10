@@ -26,7 +26,7 @@ describe("Browse cells references", function () {
         expect(browse({from: 'B2', to: ['left']})).to.equal('B1');
     });
 
-    it("Unknown format", function () {
+    it("Unknown FORMAT", function () {
         expect(function () {
             browse({from: 'UNKNOWN-FORMAT', to: ['left']});
         }).to.throw(Error);
