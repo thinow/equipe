@@ -8,7 +8,7 @@ describe("Excel files parser", function () {
         return fs.readFileSync(__dirname + '/resources/test-file.xlsx');
     }
 
-    describe.skip("Integration tests", function () {
+    describe("Integration tests", function () {
 
         it("Can parse test file", function () {
             // when
@@ -18,7 +18,7 @@ describe("Excel files parser", function () {
             expect(result).to.exist;
             expect(result)
                 .to.have.property('dates')
-                .that.include.members([new Date('2016-06-13'), new Date('2016-06-17'), new Date('2016-06-22'), new Date('2016-06-23')])
+                .that.deep.include.members([new Date('2016-06-13'), new Date('2016-06-17'), new Date('2016-06-22'), new Date('2016-06-23')])
                 .that.have.lengthOf(7);
         });
     });
@@ -48,6 +48,17 @@ describe("Excel files parser", function () {
 
             // then
             expect(anchors).to.have.members(['B3', 'B7', 'B11', 'B15', 'B19', 'B25', 'B29']);
+        });
+
+        it("Fetch date cell", function () {
+            // given
+            var xlsx = parser.readAsXlsx(readTestFile());
+
+            // when
+            var date = parser.cell({xlsx: xlsx, sheet: 'Sheet1', type: 'date', ref: 'A4'});
+
+            // then
+            expect(date).to.eql(new Date('2016-06-13'));
         });
     });
 });
