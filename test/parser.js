@@ -15,11 +15,16 @@ describe("Excel files parser", function () {
             var result = parser.parse(readTestFile(), {anchor: /must/i});
 
             // then
-            expect(result).to.exist;
             expect(result)
-                .to.have.property('dates')
-                .that.deep.include.members([new Date('2016-06-13'), new Date('2016-06-17'), new Date('2016-06-22'), new Date('2016-06-23')])
-                .that.have.lengthOf(7);
+                .to.have.deep.property('weeks.25.reference').that.eql("A2");
+            expect(result)
+                .to.have.deep.property('weeks.25.number').that.eql(25);
+            expect(result)
+                .to.have.deep.property('weeks.25.label').that.eql("First week");
+            expect(result)
+                .to.have.deep.property('weeks.25.days.B3.reference').that.eql("B3");
+            expect(result)
+                .to.have.deep.property('weeks.25.days.B3.date').that.eql(new Date('2016-06-13'));
         });
     });
 
