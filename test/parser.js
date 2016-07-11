@@ -55,6 +55,20 @@ describe("Excel files parser", function () {
             expect(anchors).to.have.members(['B3', 'B7', 'B11', 'B15', 'B19', 'B25', 'B29']);
         });
 
+        it("Fetch dates from references", function () {
+            // given
+            var xlsx = parser.readAsXlsx(readTestFile());
+
+            // when
+            var result = parser.fetchDates({xlsx: xlsx, sheet: 'Sheet1', references: ['B3', 'B19']});
+
+            // then
+            expect(result).to.eql([
+                {reference: 'B3', date: new Date('2016-06-13')},
+                {reference: 'B19', date: new Date('2016-06-17')}
+            ]);
+        });
+
         it("Fetch date cell", function () {
             // given
             var xlsx = parser.readAsXlsx(readTestFile());
