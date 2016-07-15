@@ -20,4 +20,16 @@ describe("Dates methods", function () {
         });
     });
 
+    describe("Week", function () {
+        it("One week", function () {
+            expect(dates.findWeek(new Date("2016-06-13"))).to.eql(24);
+            expect(dates.findWeek(new Date("2016-06-19"))).to.eql(24);
+        });
+
+        it("Another week", function () {
+            expect(dates.findWeek(new Date("2016-06-20"))).to.eql(25);
+            expect(dates.findWeek(new Date("2016-06-26"))).to.eql(25);
+        });
+    });
+
 });

@@ -10,10 +10,11 @@
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "dependencies": {
-    "mocha": "^2.5.3",
     "chai": "^3.5.0",
     "connect-busboy": "0.0.2",
+    "current-week-number": "^1.0.7",
     "express": "4.13.3",
+    "mocha": "^2.5.3",
     "xlsx": "^0.8.0"
   },
   "license": "MIT"

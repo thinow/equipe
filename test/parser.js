@@ -16,15 +16,15 @@ describe("Excel files parser", function () {
 
             // then
             expect(result)
-                .to.have.deep.property('weeks.w25.reference').that.eql("A2");
+                .to.have.deep.property('weeks.w24.reference').that.eql("A2");
             expect(result)
-                .to.have.deep.property('weeks.w25.number').that.eql('w25');
+                .to.have.deep.property('weeks.w24.number').that.eql('w24');
             expect(result)
-                .to.have.deep.property('weeks.w25.label').that.eql("First week");
+                .to.have.deep.property('weeks.w24.label').that.eql("First week");
             expect(result)
-                .to.have.deep.property('weeks.w25.days.B3.reference').that.eql("B3");
+                .to.have.deep.property('weeks.w24.days.B3.reference').that.eql("B3");
             expect(result)
-                .to.have.deep.property('weeks.w25.days.B3.date').that.eql(new Date('2016-06-13'));
+                .to.have.deep.property('weeks.w24.days.B3.date').that.eql(new Date('2016-06-13'));
         });
     });
 
@@ -78,30 +78,30 @@ describe("Excel files parser", function () {
 
             // then
             expect(result)
-                .to.have.deep.property('w25.reference').that.eql('A2');
+                .to.have.deep.property('w24.reference').that.eql('A2');
+            expect(result)
+                .to.have.deep.property('w24.number').that.eql('w24');
+            expect(result)
+                .to.have.deep.property('w24.label').that.eql('First week');
+            expect(result)
+                .to.have.deep.property('w24.firstDay').that.eql('B3');
+            expect(result)
+                .to.have.deep.property('w24.days.B3').that.eql({reference: 'B3', date: new Date('2016-06-13')});
+            expect(result)
+                .to.have.deep.property('w24.days.B19').that.eql({reference: 'B19', date: new Date('2016-06-17')});
+
+            expect(result)
+                .to.have.deep.property('w25.reference').that.eql('A24');
             expect(result)
                 .to.have.deep.property('w25.number').that.eql('w25');
             expect(result)
-                .to.have.deep.property('w25.label').that.eql('First week');
+                .to.have.deep.property('w25.label').that.eql('Second week');
             expect(result)
-                .to.have.deep.property('w25.firstDay').that.eql('B3');
+                .to.have.deep.property('w25.firstDay').that.eql('B25');
             expect(result)
-                .to.have.deep.property('w25.days.B3').that.eql({reference: 'B3', date: new Date('2016-06-13')});
+                .to.have.deep.property('w25.days.B25').that.eql({reference: 'B25', date: new Date('2016-06-22')});
             expect(result)
-                .to.have.deep.property('w25.days.B19').that.eql({reference: 'B19', date: new Date('2016-06-17')});
-
-            expect(result)
-                .to.have.deep.property('w26.reference').that.eql('A24');
-            expect(result)
-                .to.have.deep.property('w26.number').that.eql('w26');
-            expect(result)
-                .to.have.deep.property('w26.label').that.eql('Second week');
-            expect(result)
-                .to.have.deep.property('w26.firstDay').that.eql('B25');
-            expect(result)
-                .to.have.deep.property('w26.days.B25').that.eql({reference: 'B25', date: new Date('2016-06-22')});
-            expect(result)
-                .to.have.deep.property('w26.days.B29').that.eql({reference: 'B29', date: new Date('2016-06-23')});
+                .to.have.deep.property('w25.days.B29').that.eql({reference: 'B29', date: new Date('2016-06-23')});
         });
 
         it("Cell: text value", function () {
