@@ -26,6 +26,10 @@ describe("Browse cells references", function () {
         expect(browse({from: 'B2', to: ['left']})).to.equal('A2');
     });
 
+    it("Top neighbor", function () {
+        expect(browse({from: 'B2', to: ['up']})).to.equal('B1');
+    });
+
     it("Bottom neighbor", function () {
         expect(browse({from: 'B2', to: ['down']})).to.equal('B3');
     });
@@ -34,9 +38,15 @@ describe("Browse cells references", function () {
         expect(browse({from: 'B2', to: ['left', 'down']})).to.equal('A3');
     });
 
+    it("Reach top limit", function () {
+        expect(function () {
+            browse({from: 'D1', to: ['up']});
+        }).to.throw(Error);
+    });
+
     it("Reach left limit", function () {
         expect(function () {
-            browse({from: 'A1', to: ['left']});
+            browse({from: 'A5', to: ['left']});
         }).to.throw(Error);
     });
 
